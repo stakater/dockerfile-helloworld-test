@@ -83,8 +83,8 @@ function getVersion() {
 
 function nextPatchLevel() {
 	version=${1:-$(getRelease)}
-	gittag=$(git describe --abbrev=0 --tags) || gittag=-1
-	echo "Version: $version  " + "Tag:  $gittag"
+	gittag=$(git describe --abbrev=0 --tags) || gittag=-1;
+	echo "Version: $version  " + "Tag:  $gittag \n"
 	if [ "$version" = "$gittag" ]
 	then
 		major_and_minor=$(echo $version | cut -d. -f1,2)
