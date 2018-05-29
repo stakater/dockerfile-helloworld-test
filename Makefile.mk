@@ -82,7 +82,7 @@ tag-minor-release: .release tag
 tag-major-release: VERSION := $(shell . $(RELEASE_SUPPORT); nextMajorLevel)
 tag-major-release: .release tag 
 
-patch-release: tag-patch-release 
+patch-release: tag-patch-release release
 	@echo $(VERSION)
 
 minor-release: tag-minor-release release
