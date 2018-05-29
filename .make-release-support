@@ -115,5 +115,6 @@ function checkIfStatusChanged(){
 	if [[ `git status --porcelain` ]]; then
 		git add .
 		git commit -m "bumped to version $1" ;	
+		git push
 	fi
 }
