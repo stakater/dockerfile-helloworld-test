@@ -83,7 +83,7 @@ function getVersion() {
 
 function nextPatchLevel() {
 	version=${1:-$(getRelease)}
-	gittag=$(git describe --abbrev=0 --tags)
+	gittag=$(git describe --abbrev=0 --tags) || gittag=-1
 
 	if [ "$version" = "$gittag" ]
 	then
