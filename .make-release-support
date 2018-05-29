@@ -86,29 +86,33 @@ function nextPatchLevel() {
 	gittag=$(git describe --abbrev=0 --tags) || gittag=-1;	
 	if [ "$version" = "$gittag" ]
 	then		
-		major_and_minor=$(echo $version | cut -d. -f1,2)
-		patch=$(echo $version | cut -d. -f3)
-		version=$(printf "%s.%d" $major_and_minor $(($patch + 1)))
+		primary_version=$(echo $version | cut -d- -f1)
+		major_and_minor=$(echo $version | cut -d- -f2 | cut -d. -f1,2)
+		patch=$(echo $version | cut -d- -f2 | cut -d. -f3)
+		version=$(printf "%s-%s.%d" $primary_version $major_and_minor $(($patch + 1)))
 	else
-		major_and_minor=$(echo $version | cut -d. -f1,2)
-		patch=$(echo $version | cut -d. -f3)
-		version=$(printf "%s.%d" $major_and_minor $(($patch)))		
+		primary_version=$(echo $version | cut -d- -f1)
+		major_and_minor=$(echo $version | cut -d- -f2 | cut -d. -f1,2)
+		patch=$(echo $version | cut -d- -f2 | cut -d. -f3)
+		version=$(printf "%s-%s.%d" $primary_version $major_and_minor $(($patch)))		
 	fi		
 	echo $version
 }
 
-function nextMinorLevel() {
+function nextMinorLevel() {	
 	version=${1:-$(getRelease)}
-	major=$(echo $version | cut -d. -f1);
-	minor=$(echo $version | cut -d. -f2);
-	version=$(printf "%d.%d.0" $major $(($minor + 1))) ;
+	primary_version=$(echo $version | cut -d- -f1)
+	major=$(echo $version | cut -d- -f2 | cut -d. -f1);
+	minor=$(echo $version | cut -d- -f2 | cut -d. -f2)
+	version=$(printf "%s-%d.%d.0" $primary_version $major $(($minor + 1))) ;
 	echo $version
 }
 
 function nextMajorLevel() {
 	version=${1:-$(getRelease)}
-	major=$(echo $version | cut -d. -f1);
-	version=$(printf "%d.0.0" $(($major + 1)))
+	primary_version=$(echo $version | cut -d- -f1)
+	major=$(echo $version | cut -d- -f2 | cut -d. -f1);
+	version=$(printf "%s-%d.0.0" $primary_version $(($major + 1)))
 	echo $version
 }
 function checkIfStatusChanged(){
