@@ -97,8 +97,9 @@ tag: check-status
 	@. $(RELEASE_SUPPORT) ; ! tagExists $(VERSION) || (echo "ERROR: tag $(VERSION) for version $(VERSION) already tagged in git" >&2 && exit 1) ;
 	@. $(RELEASE_SUPPORT) ; setRelease $(VERSION)
 	@. $(RELEASE_SUPPORT) ; checkIfStatusChanged $(VERSION)
-	git tag $(VERSION) ;
-	@ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
+	git tag $(VERSION)
+	git push --tags
+	# @ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
 
 check-status:
 	@. $(RELEASE_SUPPORT) ; ! hasChanges || (echo "ERROR: there are still outstanding changes" >&2 && exit 1) ;
