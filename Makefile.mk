@@ -19,7 +19,7 @@ RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.mak
 IMAGE=$(REGISTRY_HOST)/$(USERNAME)/$(NAME)
 
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
-TAG=$(shell . $(RELEASE_SUPPORT) ; getVersion)
+# TAG=$(shell . $(RELEASE_SUPPORT) ; getVersion)
 
 SHELL=/bin/bash
 
@@ -93,17 +93,17 @@ major-release: tag-major-release release
 	@echo $(VERSION)
 
 
-tag: TAG=$(shell . $(RELEASE_SUPPORT); getTag $(VERSION))
+# tag: TAG=$(shell . $(RELEASE_SUPPORT); getTag $(VERSION))
 tag: check-status
-	@. $(RELEASE_SUPPORT) ; ! tagExists $(TAG) || (echo "ERROR: tag $(TAG) for version $(VERSION) already tagged in git" >&2 && exit 1) ;
+	@. $(RELEASE_SUPPORT) ; ! tagExists $(VERSION) || (echo "ERROR: tag $(VERSION) for version $(VERSION) already tagged in git" >&2 && exit 1) ;
 	@. $(RELEASE_SUPPORT) ; setRelease $(VERSION)
 	# @. $(RELEASE_SUPPORT) ; checkIfStatusChanged $(VERSION)
-	# git tag $(TAG) ;
+	# git tag $(VERSION) ;
 	@ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
 
 check-status:
 	@. $(RELEASE_SUPPORT) ; ! hasChanges || (echo "ERROR: there are still outstanding changes" >&2 && exit 1) ;
 
 check-release: .release
-	@. $(RELEASE_SUPPORT) ; tagExists $(TAG) || (echo "ERROR: version not yet tagged in git. make [minor,major,patch]-release." >&2 && exit 1) ;
-	@. $(RELEASE_SUPPORT) ; ! differsFromRelease $(TAG) || (echo "ERROR: current directory differs from tagged $(TAG). make [minor,major,patch]-release." ; exit 1)
+	@. $(RELEASE_SUPPORT) ; tagExists $(VERSION) || (echo "ERROR: version not yet tagged in git. make [minor,major,patch]-release." >&2 && exit 1) ;
+	@. $(RELEASE_SUPPORT) ; ! differsFromRelease $(VERSION) || (echo "ERROR: current directory differs from tagged $(VERSION). make [minor,major,patch]-release." ; exit 1)
