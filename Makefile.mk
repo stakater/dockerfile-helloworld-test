@@ -96,8 +96,8 @@ tag: TAG=$(shell . $(RELEASE_SUPPORT) ; getVersion)
 tag: check-status
 	@. $(RELEASE_SUPPORT) ; ! tagExists $(VERSION) || (echo "ERROR: tag $(VERSION) for version $(VERSION) already tagged in git" >&2 && exit 1) ;
 	@. $(RELEASE_SUPPORT) ; setRelease $(VERSION)
-	# @. $(RELEASE_SUPPORT) ; checkIfStatusChanged $(VERSION)
-	# git tag $(VERSION) ;
+	@. $(RELEASE_SUPPORT) ; checkIfStatusChanged $(VERSION)
+	git tag $(VERSION) ;
 	@ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
 
 check-status:
