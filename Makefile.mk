@@ -54,8 +54,7 @@ docker-build: .release
 	fi
 
 .release:
-	@echo "release=0.0.0" > .release
-	@echo "tag=$(NAME)-0.0.0" >> .release
+	@echo "release=0.0.0" > .release	
 	@echo INFO: .release created
 	@cat .release
 
@@ -93,7 +92,7 @@ major-release: tag-major-release release
 	@echo $(VERSION)
 
 
-# tag: TAG=$(shell . $(RELEASE_SUPPORT); getTag $(VERSION))
+tag: TAG=$(shell . $(RELEASE_SUPPORT) ; getVersion)
 tag: check-status
 	@. $(RELEASE_SUPPORT) ; ! tagExists $(VERSION) || (echo "ERROR: tag $(VERSION) for version $(VERSION) already tagged in git" >&2 && exit 1) ;
 	@. $(RELEASE_SUPPORT) ; setRelease $(VERSION)
